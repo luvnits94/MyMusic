@@ -16,6 +16,7 @@
     <ImageButton
         android:id="@+id/btn_stop"
         android:layout_width="wrap_content"
+        android:onClick="prevMusic"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/shuffle"
         android:layout_alignBottom="@+id/btn_prev"
@@ -24,17 +25,19 @@
 
     <ImageButton
         android:id="@+id/btn_play"
+        android:onClick="playMusic"
         android:layout_width="60dp"
         android:layout_height="60dp"
         app:srcCompat="@drawable/playy"
         android:layout_marginTop="23dp"
+        android:layout_marginEnd="11dp"
         android:layout_below="@+id/seekBar"
-        android:layout_toStartOf="@+id/btn_next"
-        android:layout_marginEnd="13dp" />
+        android:layout_toStartOf="@+id/btn_next" />
 
     <ImageButton
         android:id="@+id/btn_next"
         android:layout_width="wrap_content"
+        android:onClick="nextMusic"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/next"
         android:layout_alignBottom="@+id/btn_play"
@@ -48,6 +51,7 @@
         app:srcCompat="@drawable/prev"
         android:layout_marginEnd="14dp"
         android:layout_alignTop="@+id/btn_play"
+        android:onClick="prevMusic"
         android:layout_toStartOf="@+id/btn_play" />
 
     <SeekBar
@@ -76,6 +80,7 @@
         android:scaleType="centerCrop"
         app:srcCompat="@drawable/conitnue"
         android:layout_marginEnd="12dp"
+        android:onClick="pauseMusic"
         android:layout_alignTop="@+id/btn_next"
         android:layout_alignParentEnd="true" />
 
