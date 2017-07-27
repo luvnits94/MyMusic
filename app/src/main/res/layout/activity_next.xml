@@ -1,9 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="nitishapps.com.mymusic.NextActivity">
+    android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="300dp"
+        app:srcCompat="@drawable/media"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageButton
+        android:id="@+id/imageButton12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/shuffle"
+        android:layout_marginStart="15dp"
+        android:layout_alignTop="@+id/btn_next"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:id="@+id/btn_play"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:srcCompat="@drawable/playy"
+        android:layout_marginTop="23dp"
+        android:layout_below="@+id/seekBar"
+        android:layout_toStartOf="@+id/btn_next"
+        android:layout_marginEnd="13dp" />
+
+    <ImageButton
+        android:id="@+id/btn_next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/next"
+        android:layout_alignBottom="@+id/btn_play"
+        android:layout_toStartOf="@+id/imageButton"
+        android:layout_marginEnd="13dp" />
+
+    <ImageButton
+        android:id="@+id/btn_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/prev"
+        android:layout_marginEnd="14dp"
+        android:layout_alignTop="@+id/btn_play"
+        android:layout_toStartOf="@+id/btn_play" />
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="42dp" />
+
+    <CheckBox
+        android:id="@+id/Enable_Sensor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="14dp"
+        android:layout_toStartOf="@+id/btn_play"
+        android:text="Enable Sensor"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title" />
+
+    <ImageButton
+        android:id="@+id/btn_pause"
+        android:layout_width="40dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/pause"
+        android:layout_alignTop="@+id/btn_next"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp" />
 </RelativeLayout>

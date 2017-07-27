@@ -1,5 +1,4 @@
 package nitishapps.com.mymusic;
-
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,15 +24,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         getSongList();
 
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(MainActivity.this,(new Integer(position)).toString(), Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(MainActivity.this,NextActivity.class);
                 i.putExtra("in",position);
+                i.putExtra("songPath",songPath);
                 startActivity(i);
             }
         });
+
     }
     private void getSongList(){
         lv = (ListView) findViewById(R.id.listSong);
