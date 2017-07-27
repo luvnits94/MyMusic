@@ -36,6 +36,9 @@ public class NextActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
 
+
+        sb = (SeekBar) findViewById(R.id.seekBar);
+        tv_cd = (TextView) findViewById(R.id.curr_dur);
         //position from Main Activity
         songPath = new ArrayList();
         Intent i = getIntent();
@@ -44,6 +47,71 @@ public class NextActivity extends AppCompatActivity {
         position = index;
         //Toast.makeText(this,songPath.get(index).toString(), Toast.LENGTH_SHORT).show();
         playMusic();
+
+
+
+        sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    if(mp != null){
+                        mp.seekTo(progress);
+                    }
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+
+
+
+
+        });
+
+
+        Thread th = new Thread(){
+            @Override
+            public void run() {
+                while (true){
+                    if(mp == null){
+                        sb.setProgress(0);
+                        tv_cd.setText("00:00:00");
+                    }
+
+                    else{
+                        sb.setProgress(mp.getCurrentPosition());
+                        runOnUiThread(new Runnable(){
+                            @Override
+                            public void run() {
+                                tv_cd.setText(printDuration(mp.getCurrentPosition()));
+                            }
+                        });
+
+                    }
+
+                }
+            }
+        };
+        th.start();
+
+    }
+    public String printDuration(int d)
+    {
+        int l = d/1000;
+        int min = l/60;
+        int sec = l%60;
+        String s = ""+min;
+        String s1 = ""+sec;
+        if(min < 10)
+            s = "0" + s;
+        if(sec < 10)
+            s1 = "0"+s1;
+        return s+":"+s1;
     }
     @Override
     protected void onPause() {
@@ -74,9 +142,49 @@ public class NextActivity extends AppCompatActivity {
     public void playMusic(){
         if(mp == null){
             mp = MediaPlayer.create(this, Uri.parse(songPath.get(position).toString()));
+
         }
         else {
         }
+        sb.setMax(mp.getDuration());
         mp.start();
     }
+
+
+    public void pauseMusic(View view){
+        if(mp!=null && mp.isPlaying()){
+            mp.pause();
+        }
+    }
+
+    public void stopMusic(View view){
+        stopMusic();
+    }
+    public void stopMusic(){
+        stopService(i);
+        i.putExtra("option","stop");
+        startService(i);
+    }
+
+    public void nextMusic(View view){
+        stopMusic();
+        if(position==(songPath.size()-1)){
+            position=0;
+        }
+        else{
+            position++;
+        }
+        playMusic();
+    }
+    public void prevMusic(View view){
+        stopMusic();
+        if(position==0){
+            position=songPath.size()-1;
+        }
+        else{
+            position--;
+        }
+        playMusic();
+    }
+
 }
