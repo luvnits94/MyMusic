@@ -21,6 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".NextActivity"></activity>
+        <service android:name=".MyService"/>
     </application>
 
 </manifest>

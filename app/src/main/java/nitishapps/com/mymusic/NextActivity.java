@@ -1,55 +1,37 @@
 package nitishapps.com.mymusic;
-
 import android.content.Intent;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.ArrayList;
-
 public class NextActivity extends AppCompatActivity {
-    static ArrayList songPath;
-    Intent i;
-    Button b_play, b_pause, b_stop;
     TextView tv_cd;
-    TextView tv_td;
+    Intent k;
     static SeekBar sb;
     static MediaPlayer mp;
     static int position = 0;
-
-
-
-
-
-
-
-
-    //static int position = 0;
+    static ArrayList songPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next);
-
-
         sb = (SeekBar) findViewById(R.id.seekBar);
         tv_cd = (TextView) findViewById(R.id.curr_dur);
-        //position from Main Activity
         songPath = new ArrayList();
         Intent i = getIntent();
         int index = i.getIntExtra("in",-1);
+
+
+
+
         songPath = i.getIntegerArrayListExtra("songPath");
         position = index;
-        //Toast.makeText(this,songPath.get(index).toString(), Toast.LENGTH_SHORT).show();
-        playMusic();
-
-
-
+        k = new Intent(this,MyService.class);
+        k.putExtra("options","play");
+        startService(k);
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -67,38 +49,28 @@ public class NextActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
             }
-
-
-
-
         });
-
-
         Thread th = new Thread(){
             @Override
             public void run() {
                 while (true){
                     if(mp == null){
                         sb.setProgress(0);
-                        tv_cd.setText("00:00:00");
                     }
-
                     else{
-                        sb.setProgress(mp.getCurrentPosition());
+                        final int curr = mp.getCurrentPosition();
+                        sb.setProgress(curr);
                         runOnUiThread(new Runnable(){
                             @Override
                             public void run() {
-                                tv_cd.setText(printDuration(mp.getCurrentPosition()));
+                                tv_cd.setText(printDuration(curr));
                             }
                         });
-
                     }
-
                 }
             }
         };
         th.start();
-
     }
     public String printDuration(int d)
     {
@@ -113,43 +85,26 @@ public class NextActivity extends AppCompatActivity {
             s1 = "0"+s1;
         return s+":"+s1;
     }
+
     @Override
     protected void onPause() {
-        //stopService(i);
         super.onPause();
-        mp.pause();
-        mp = null;
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        Intent i = getIntent();
-        int index = i.getIntExtra("in",-1);
-        songPath = i.getIntegerArrayListExtra("songPath");
-        position = index;
-        //Toast.makeText(this,songPath.get(index).toString(), Toast.LENGTH_SHORT).show();
-        playMusic();
+    protected void onDestroy() {
+
+        stopService(k);
+        super.onDestroy();
     }
-
-
-    //Play Working Finee
 
     public void playMusic(View view){
         playMusic();
-        //tmmv_cd.setText(mp.getDuration());
     }
     public void playMusic(){
-        if(mp == null){
-            mp = MediaPlayer.create(this, Uri.parse(songPath.get(position).toString()));
-
-        }
-        else {
-        }
-        sb.setMax(mp.getDuration());
-        mp.start();
+        k.putExtra("options","play");
+        startService(k);
     }
-
 
     public void pauseMusic(View view){
         if(mp!=null && mp.isPlaying()){
@@ -161,30 +116,20 @@ public class NextActivity extends AppCompatActivity {
         stopMusic();
     }
     public void stopMusic(){
-        stopService(i);
-        i.putExtra("option","stop");
-        startService(i);
+        k = new Intent(this,MyService.class);
+        k.putExtra("options","stop");
+        startService(k);
+
     }
 
     public void nextMusic(View view){
-        stopMusic();
-        if(position==(songPath.size()-1)){
-            position=0;
-        }
-        else{
-            position++;
-        }
-        playMusic();
+        k = new Intent(this,MyService.class);
+        k.putExtra("options","next");
+        startService(k);
     }
     public void prevMusic(View view){
-        stopMusic();
-        if(position==0){
-            position=songPath.size()-1;
-        }
-        else{
-            position--;
-        }
-        playMusic();
+        k = new Intent(this,MyService.class);
+        k.putExtra("options","prev");
+        startService(k);
     }
-
 }

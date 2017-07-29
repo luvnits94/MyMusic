@@ -9,35 +9,30 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
-
     ArrayList songName = new ArrayList();
     ArrayList songPath = new ArrayList();
     ListView lv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSongList();
-
-
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(MainActivity.this,(new Integer(position)).toString(), Toast.LENGTH_SHORT).show();
+
                 Intent i = new Intent(MainActivity.this,NextActivity.class);
                 i.putExtra("in",position);
                 i.putExtra("songPath",songPath);
                 startActivity(i);
             }
         });
-
     }
-    private void getSongList(){
+
+    public void getSongList(){
         lv = (ListView) findViewById(R.id.listSong);
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String selection = MediaStore.Audio.Media.IS_MUSIC+"!=0";
@@ -57,6 +52,3 @@ public class MainActivity extends AppCompatActivity {
         c.close();
     }
 }
-
-
-
